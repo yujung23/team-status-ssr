@@ -2,8 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>팀원 상태 수정</title>
+    <title>새 팀원 등록</title>
     <style>
+        /* 컬러 팔레트 */
         :root {
             --primary-blue: #0056b3;
             --light-blue: #f0f7ff;
@@ -21,6 +22,7 @@
             justify-content: center;
         }
 
+        /* 폼에 맞게 너비를 500px로 줄인 컨테이너 */
         .container {
             width: 100%;
             max-width: 500px;
@@ -40,6 +42,7 @@
             text-align: center;
         }
 
+        /* 폼 요소 스타일링 */
         .form-group {
             margin-bottom: 20px;
         }
@@ -68,18 +71,7 @@
             box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
         }
 
-        /* 수정 불가능한 이름 필드 전용 디자인 */
-        .name-display {
-            font-size: 15px;
-            font-weight: 600;
-            padding: 12px;
-            background-color: #f8fbff;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--primary-blue);
-            margin: 0;
-        }
-
+        /* 버튼 그룹 */
         .button-group {
             display: flex;
             gap: 10px;
@@ -99,23 +91,34 @@
             transition: all 0.2s;
         }
 
-        .btn-submit { background-color: var(--primary-blue); color: white; }
-        .btn-submit:hover { background-color: #004494; box-shadow: 0 2px 6px rgba(0,86,179,0.3); }
+        .btn-submit {
+            background-color: var(--primary-blue);
+            color: white;
+        }
 
-        .btn-cancel { background-color: #e2e8f0; color: #333; }
-        .btn-cancel:hover { background-color: #cbd5e1; }
+        .btn-submit:hover {
+            background-color: #004494;
+            box-shadow: 0 2px 6px rgba(0,86,179,0.3);
+        }
+
+        .btn-cancel {
+            background-color: #e2e8f0;
+            color: #333;
+        }
+
+        .btn-cancel:hover {
+            background-color: #cbd5e1;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h2>✏️ 상태 수정</h2>
+    <h2>➕ 신규 팀원 상태 등록</h2>
 
-    <form th:action="@{/edit}" th:object="${formDto}" method="post">
-        <input type="hidden" th:field="*{id}" />
-
+    <form th:action="@{/add}" th:object="${formDto}" method="post">
         <div class="form-group">
-            <label>이름</label>
-            <p class="name-display" th:text="${member.name}"></p>
+            <label for="name">이름</label>
+            <input type="text" th:field="*{name}" placeholder="팀원의 이름을 입력하세요" required />
         </div>
 
         <div class="form-group">
@@ -123,18 +126,18 @@
             <select th:field="*{status}">
                 <option th:each="s : ${statuses}"
                         th:value="${s.name()}"
-                        th:text="${s.description}">상태</option>
+                        th:text="${s.description}">상태 선택</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="message">메시지</label>
-            <input type="text" th:field="*{message}" placeholder="새로운 메시지를 입력하세요" />
+            <input type="text" th:field="*{message}" placeholder="오늘의 한마디를 적어주세요 (선택)" />
         </div>
 
         <div class="button-group">
             <a th:href="@{/dashboard}" class="btn btn-cancel">취소</a>
-            <button type="submit" class="btn btn-submit">수정 완료</button>
+            <button type="submit" class="btn btn-submit">등록하기</button>
         </div>
     </form>
 </div>
