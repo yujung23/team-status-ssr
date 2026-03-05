@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>새 팀원 등록</title>
+</head>
+<body>
+<h2>신규 팀원 상태 등록</h2>
+
+<form th:action="@{/add}" th:object="${formDto}" method="post">
+    <div>
+        <label for="name">이름:</label>
+        <input type="text" th:field="*{name}" placeholder="이름을 입력하세요" required />
+    </div>
+    <br>
+
+    <div>
+        <label for="status">현재 상태:</label>
+        <select th:field="*{status}">
+            <option th:each="s : ${statuses}"
+                    th:value="${s.name()}"
+                    th:text="${s.description}">상태 선택</option>
+        </select>
+    </div>
+    <br>
+
+    <div>
+        <label for="message">메시지:</label>
+        <input type="text" th:field="*{message}" placeholder="남길 말을 적어주세요" />
+    </div>
+    <br>
+
+    <button type="submit">등록하기</button>
+</form>
+</body>
+</html>
