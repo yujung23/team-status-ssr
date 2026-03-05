@@ -19,7 +19,6 @@ public class MemberFormController {
 
     private final TeamStatusService teamStatusService;
 
-    // --- [등록 파트] ---
     @GetMapping("/add")
     public String addForm(Model model) {
         model.addAttribute("formDto", new MemberFormDTO());
@@ -33,7 +32,6 @@ public class MemberFormController {
         return "redirect:/dashboard";
     }
 
-    // --- [수정 파트] ---
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
         TeamMember member = teamStatusService.getMemberById(id);
@@ -47,7 +45,7 @@ public class MemberFormController {
         model.addAttribute("member", member);
         model.addAttribute("statuses", Status.values());
 
-        return "add-status";
+        return "edit-status";
     }
 
     @PostMapping("/edit")
