@@ -2,7 +2,6 @@ package com.teamlog.status.service;
 
 import com.teamlog.status.dao.TeamStatusDAO;
 import com.teamlog.status.dto.MemberFormDTO;
-import com.teamlog.status.dto.UpdateDTO;
 import com.teamlog.status.model.Status;
 import com.teamlog.status.model.TeamMember;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamStatusService {
 
-    // 필드명을 A님과 통일하여 'teamStatusDAO'로 맞췄습니다!
     private final TeamStatusDAO teamStatusDAO;
 
     // 1. 등록 로직
@@ -36,7 +34,7 @@ public class TeamStatusService {
     }
 
     // 3. 수정 로직
-    public void updateMemberStatus(UpdateDTO dto) {
+    public void updateMemberStatus(MemberFormDTO dto) {
         TeamMember member = teamStatusDAO.findById(dto.getId());
         if (member != null) {
             Status newStatus = Status.valueOf(dto.getStatus()); // String -> Enum 변환

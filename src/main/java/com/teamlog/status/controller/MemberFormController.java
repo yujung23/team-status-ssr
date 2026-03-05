@@ -1,7 +1,6 @@
 package com.teamlog.status.controller;
 
 import com.teamlog.status.dto.MemberFormDTO;
-import com.teamlog.status.dto.UpdateDTO;
 import com.teamlog.status.model.Status;
 import com.teamlog.status.model.TeamMember;
 import com.teamlog.status.service.TeamStatusService;
@@ -36,7 +35,7 @@ public class MemberFormController {
     public String editForm(@PathVariable Long id, Model model) {
         TeamMember member = teamStatusService.getMemberById(id);
 
-        UpdateDTO dto = new UpdateDTO();
+        MemberFormDTO dto = new MemberFormDTO();
         dto.setId(member.getId());
         dto.setStatus(member.getStatus().name());
         dto.setMessage(member.getMessage());
@@ -49,7 +48,7 @@ public class MemberFormController {
     }
 
     @PostMapping("/edit")
-    public String editMember(@ModelAttribute UpdateDTO dto) {
+    public String editMember(@ModelAttribute MemberFormDTO dto) {
         teamStatusService.updateMemberStatus(dto);
         return "redirect:/dashboard";
     }
