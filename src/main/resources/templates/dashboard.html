@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>팀 공유 일정 보드</title>
+    <style>
+        /* 컬러 팔레트 변수 설정 */
+        :root {
+            --primary-blue: #0056b3;
+            --light-blue: #f0f7ff;
+            --sky-blue: #cce0ff;
+            --text-main: #333333;
+            --border-color: #e1e8f0;
+        }
+
+        body {
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            background-color: var(--light-blue); /* 전체 배경을 아주 연한 하늘색으로 */
+            color: var(--text-main);
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* 메인 컨테이너 (그림자 효과로 종이가 떠있는 느낌) */
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 86, 179, 0.08);
+        }
+
+        h2 {
+            color: var(--primary-blue);
+            border-bottom: 2px solid var(--sky-blue);
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 12px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        th {
+            background-color: #f8fbff;
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        tbody tr:hover { background-color: #fcfdfe; }
+
+        /* 버튼 스타일링 (모던 플랫 디자인) */
+        .btn {
+            padding: 8px 14px;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-add { background-color: var(--primary-blue); color: white; }
+        .btn-add:hover { background-color: #004494; box-shadow: 0 2px 6px rgba(0,86,179,0.3); }
+
+        .btn-edit { background-color: #e2e8f0; color: #333; }
+        .btn-edit:hover { background-color: #cbd5e1; }
+
+        .btn-danger { background-color: #fee2e2; color: #ef4444; }
+        .btn-danger:hover { background-color: #fca5a5; color: white; }
+
+        /* 상태별 둥근 배지 스타일 */
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .status-WORK { background-color: #dbeafe; color: #1e40af; }     /* 파랑 */
+        .status-MEETING { background-color: #fef3c7; color: #b45309; }  /* 주황 */
+        .status-OUT { background-color: #fee2e2; color: #b91c1c; }      /* 빨강 */
+        .status-OFF { background-color: #f1f5f9; color: #475569; }      /* 회색 */
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>📅 팀 공유 일정 보드</h2>
+
+    <div class="header-actions">
+        <a th:href="@{/add}" class="btn btn-add">➕ 새 팀원 등록</a>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>이름</th>
+            <th>상태</th>
+            <th>오늘의 한마디</th>
+            <th>마지막 업데이트</th>
+            <th>관리</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="member : ${members}">
+            <td th:text="${member.id}">1</td>
+            <td th:text="${member.name}" style="font-weight: 600;">박지은</td>
+
+            <td>
+                        <span th:text="${member.status.description}"
+                              th:class="'badge status-' + ${member.status.name()}">
+                            업무 중
+                        </span>
+            </td>
+
+            <td th:text="${member.message}" style="color: #555;">메모</td>
+
+            <td th:text="${#temporals.format(member.lastUpdated, 'yyyy-MM-dd HH:mm')}" style="color: #888; font-size: 13px;">
+                2026-03-05 15:41
+            </td>
+
+            <td>
+                <a th:href="@{/edit/{id}(id=${member.id})}" class="btn btn-edit">수정</a>
+                <form th:action="@{/delete/{id}(id=${member.id})}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
